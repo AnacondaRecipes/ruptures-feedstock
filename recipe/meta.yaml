@@ -10,28 +10,35 @@ source:
   sha256: a114a17bcc3e5a3ab609c9e5e2a8d23f407f8031604330867d0ca47ad53fff97
 
 build:
-  number: 2
-  script: {{ PYTHON }} -m pip install . -vv
+  number: 0
+  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+  skips: True  # [py<36]
 
 requirements:
   build:
-    - python                                 # [build_platform != target_platform]
-    - cross-python_{{ target_platform }}     # [build_platform != target_platform]
-    - cython                                 # [build_platform != target_platform]
-    - numpy                                  # [build_platform != target_platform]
     - {{ compiler('c') }}
   host:
     - pip
     - python
     - cython
+    - wheel
     - numpy
-    - setuptools_scm[toml] >=3.4
+    - setuptools_scm
+    - toml
   run:
     - numpy
     - python
     - scipy
 
 test:
+  source_files:
+    - tests/*
+  requires:
+    - pip
+    - pytest
+  commands:
+    - pip check
+    - pytest tests
   imports:
     - ruptures
     - ruptures.costs
@@ -42,12 +49,22 @@ test:
     - ruptures.utils
 
 about:
-  home: https://github.com/deepcharles/ruptures
+  home: https://centre-borelli.github.io/ruptures-docs/
+  dev_url: https://github.com/deepcharles/ruptures/
   license: BSD-2-Clause
   license_family: BSD
   license_file: LICENSE
   summary: Change point detection for signals, in Python
-  doc_url: http://ctruong.perso.math.cnrs.fr/ruptures-docs/build/html/index.html
+  description: |
+    `ruptures` is a Python library for off-line change point detection. 
+    This package provides methods for the analysis and segmentation of 
+    non-stationary signals. Implemented algorithms include exact and 
+    approximate detection for various parametric and non-parametric 
+    models. ruptures focuses on ease of use by providing a well-documented 
+    and consistent interface. In addition, thanks to its modular structure, 
+    different algorithms and models can be connected and extended within 
+    this package.
+  doc_url: https://centre-borelli.github.io/ruptures-docs/
 
 extra:
   recipe-maintainers:
