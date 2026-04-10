@@ -25,7 +25,6 @@ requirements:
     - wheel
     - numpy
     - setuptools_scm
-    - toml
   run:
     - numpy
     - python
