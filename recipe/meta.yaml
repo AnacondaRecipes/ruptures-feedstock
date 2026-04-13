@@ -1,5 +1,5 @@
 {% set name = "ruptures" %}
-{% set version = "1.1.7" %}
+{% set version = "1.1.10" %}
 
 package:
   name: {{ name|lower }}
@@ -7,12 +7,12 @@ package:
 
 source:
   url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: a114a17bcc3e5a3ab609c9e5e2a8d23f407f8031604330867d0ca47ad53fff97
+  sha256: 76b998f10709045e91a5f44173dc574bf98a106fd3bf22ec3c63b298a02df031
 
 build:
   number: 0
   script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
-  skips: True  # [py<36]
+  skip: True  # [py<39 or py>313]  # upstream setup.cfg caps python_requires at <3.14
 
 requirements:
   build:
@@ -21,10 +21,10 @@ requirements:
     - pip
     - python
     - cython
+    - setuptools
     - wheel
     - numpy
     - setuptools_scm
-    - toml
   run:
     - numpy
     - python
